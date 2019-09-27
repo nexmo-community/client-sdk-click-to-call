@@ -25,15 +25,6 @@ app.get('/auth/:userid', (req, res) => {
   })
 })
 
-app.get('/callsupport', (req, res) => {
-  console.log("User calling support:")
-  console.log(req.query)
-  res.render('calling', {
-    status: 'Calling support ...'
-  })
-
-});
-
 app.get('/webhooks/answer', (req, res) => {
   console.log("Answer:")
   console.log(req.query)
