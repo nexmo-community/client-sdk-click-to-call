@@ -14,10 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const server = app.listen(process.env.PORT || 5000);
 
 app.get('/', (req, res) => {
-
-  let date_obj = new Date()
-  let curr_time = `${date_obj.getHours()}: ${date_obj.getMinutes()}`
-
   res.render('index')
 })
 
