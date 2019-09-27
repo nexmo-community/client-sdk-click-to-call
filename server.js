@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
   let curr_time = `${date_obj.getHours()}: ${date_obj.getMinutes()}`
 
   res.render('index', {
-    title: 'Hello Mark!',
+    title: 'Hello World!',
     time: curr_time
   })
 })
