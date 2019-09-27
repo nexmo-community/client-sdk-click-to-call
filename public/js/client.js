@@ -2,10 +2,8 @@ let JWT = ''
 let SUPPORT_NUMBER = ''
 let applicationObj = null
 let currentCall = null
-let btnCall = null
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  btnCall = document.getElementById("btnCall")
   init()
 })
 
@@ -25,10 +23,7 @@ function init() {
           console.log(`You've logged in with the user ${applicationObj.me.name}`)
           applicationObj.on("member:call", (member, call) => {
             currentCall = call
-            btnCall.className = "button-hangup"
-            btnCall.innerHTML = "Hang Up"
-            btnCall.removeEventListener('click', callSupport)
-            btnCall.addEventListener('click', terminateCall)
+            toggleCallStatusButton('in_progress')
           })
         })
         .catch(errorLogger)
@@ -46,10 +41,22 @@ function callSupport() {
 
 function terminateCall(call) {
   currentCall.hangUp()
-  btnCall.className = "button-call"
-  btnCall.innerHTML = "Call Now!"
-  btnCall.removeEventListener('click', terminateCall)
-  btnCall.addEventListener('click', callSupport)
+  toggleCallStatusButton('idle')
+}
+
+function toggleCallStatusButton(state) {
+  btnCall = document.getElementById("btnCall")
+  if (state === 'in_progress') {
+    btnCall.className = "button-hangup"
+    btnCall.innerHTML = "Hang Up"
+    btnCall.removeEventListener('click', callSupport)
+    btnCall.addEventListener('click', terminateCall)
+  } else {
+    btnCall.className = "button-call"
+    btnCall.innerHTML = "Call Now!"
+    btnCall.removeEventListener('click', terminateCall)
+    btnCall.addEventListener('click', callSupport)
+  }
 }
 
 function errorLogger(error) {
