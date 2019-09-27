@@ -18,10 +18,7 @@ app.get('/', (req, res) => {
   let date_obj = new Date()
   let curr_time = `${date_obj.getHours()}: ${date_obj.getMinutes()}`
 
-  res.render('index', {
-    title: 'Hello Mark!',
-    time: curr_time
-  })
+  res.render('index')
 })
 
 app.get('/auth/:userid', (req, res) => {
