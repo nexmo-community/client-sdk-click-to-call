@@ -21,7 +21,7 @@ app.get('/auth/:userid', (req, res) => {
   console.log(`Authenticating ${req.params.userid}`)
   return res.status(200).send({
     credentials: process.env.JWT,
-    number: process.env.SUPPORT_PHONE_NUMBER
+    number: process.env.NEXMO_NUMBER
   })
 })
 
