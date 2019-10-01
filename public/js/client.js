@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  // Fetch a JWT from the server to authenticate the user
   const response = await fetch('/auth/supportuser');
-  const authdata = await response.json();
+  const jwt = await response.json();
 
-  let jwt = authdata.credentials;
-  let supportNumber = authdata.number;
-
+  // Create a new NexmoClient instance and authenticate with the JWT
   let client = new NexmoClient();
   application = await client.login(jwt);
   console.log(`You've logged in with the user ${application.me.name}`);
@@ -23,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Whenever we click the call button, trigger a call to the support number
   // and hide the Call Now button
   btnCall.addEventListener('click', () => {
-    application.callServer(supportNumber);
+    application.callServer();
     toggleCallStatusButton('in_progress');
   });
 });
@@ -37,4 +36,3 @@ function toggleCallStatusButton(state) {
     btnHangup.style.display = "none";
   }
 }
-

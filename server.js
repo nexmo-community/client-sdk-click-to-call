@@ -1,7 +1,7 @@
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
-const nexmo = require('nexmo-client')
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const nexmo = require('nexmo-client');
 
 require('dotenv').config();
 
@@ -11,18 +11,15 @@ app.use(express.static('public'))
 app.use('/modules', express.static('node_modules/nexmo-client/dist/'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const server = app.listen(process.env.PORT || 5000);
+const server = app.listen(process.env.PORT || 3000);
 
 app.get('/', (req, res) => {
-  res.render('index')
+  res.render('index');
 })
 
 app.get('/auth/:userid', (req, res) => {
   console.log(`Authenticating ${req.params.userid}`)
-  return res.status(200).send({
-    credentials: process.env.JWT,
-    number: process.env.NEXMO_NUMBER
-  })
+  return res.json(process.env.JWT);
 })
 
 app.get('/webhooks/answer', (req, res) => {
@@ -35,6 +32,7 @@ app.get('/webhooks/answer', (req, res) => {
     },
     {
       "action": "connect",
+      "from": process.env.NEXMO_NUMBER,
       "endpoint": [{
         "type": "phone",
         "number": process.env.DESTINATION_PHONE_NUMBER
