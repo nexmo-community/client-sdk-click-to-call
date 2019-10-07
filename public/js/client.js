@@ -1,64 +1,38 @@
-let JWT = ''
-let SUPPORT_NUMBER = ''
-let applicationObj = null
-let currentCall = null
+document.addEventListener('DOMContentLoaded', async () => {
+  // Fetch a JWT from the server to authenticate the user
+  const response = await fetch('/auth/supportuser');
+  const jwt = await response.json();
 
-document.addEventListener('DOMContentLoaded', (event) => {
-  init()
-})
+  // Create a new NexmoClient instance and authenticate with the JWT
+  let client = new NexmoClient();
+  application = await client.login(jwt);
+  console.log(`You've logged in with the user ${application.me.name}`);
 
-function init() {
-  const http = new XMLHttpRequest()
-  http.open('GET', '/auth/supportuser', true)
-  http.onreadystatechange = function () {
-    if (http.readyState === 4 && http.status === 200 && http.responseText) {
-      console.log(http.responseText)
-      const authdata = JSON.parse(http.responseText)
-      JWT = authdata.credentials
-      SUPPORT_NUMBER = authdata.number
-      client = new NexmoClient()
-        .login(JWT)
-        .then(application => {
-          applicationObj = application
-          console.log(`You've logged in with the user ${applicationObj.me.name}`)
-          applicationObj.on("member:call", (member, call) => {
-            currentCall = call
-            toggleCallStatusButton('in_progress')
-          })
-        })
-        .catch(errorLogger)
-    }
-  }
-  http.send()
+  // Whenever a call is received, bind an event that ends the call to
+  // the hangup button
+  application.on("member:call", (member, call) => {
+    let terminateCall = () => {
+      call.hangUp();
+      toggleCallStatusButton('idle');
+      btnHangup.removeEventListener('click', terminateCall)
+    };
+    btnHangup.addEventListener('click', terminateCall);
+  });
 
-  const button = document.getElementById('btnCall')
-  button.addEventListener('click', callSupport)
-}
-
-function callSupport() {
-  applicationObj.callServer(SUPPORT_NUMBER)
-}
-
-function terminateCall(call) {
-  currentCall.hangUp()
-  toggleCallStatusButton('idle')
-}
+  // Whenever we click the call button, trigger a call to the support number
+  // and hide the Call Now button
+  btnCall.addEventListener('click', () => {
+    application.callServer();
+    toggleCallStatusButton('in_progress');
+  });
+});
 
 function toggleCallStatusButton(state) {
-  btnCall = document.getElementById("btnCall")
   if (state === 'in_progress') {
-    btnCall.className = "button-hangup"
-    btnCall.innerHTML = "Hang Up"
-    btnCall.removeEventListener('click', callSupport)
-    btnCall.addEventListener('click', terminateCall)
+    btnCall.style.display = "none";
+    btnHangup.style.display = "inline-block";
   } else {
-    btnCall.className = "button-call"
-    btnCall.innerHTML = "Call Now!"
-    btnCall.removeEventListener('click', terminateCall)
-    btnCall.addEventListener('click', callSupport)
+    btnCall.style.display = "inline-block";
+    btnHangup.style.display = "none";
   }
-}
-
-function errorLogger(error) {
-  console.log(error)
 }
