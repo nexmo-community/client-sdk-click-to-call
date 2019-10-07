@@ -32,6 +32,12 @@ h1 {
   text-align: center;
 }
 
+.status {
+  color: red;
+  font-size:22px;
+  text-align: center;
+}
+
 .button-call {
   background-color:green; 
   border: none;
