@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   application = await client.login(jwt);
   notifications.innerHTML = `You are logged in as ${application.me.name}`;
 
-  // Whenever a call is received, bind an event that ends the call to
+  // Whenever a call is made bind an event that ends the call to
   // the hangup button
   application.on("member:call", (member, call) => {
     let terminateCall = () => {
