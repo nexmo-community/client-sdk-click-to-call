@@ -1,5 +1,5 @@
-# Client SDK - Call from a Webpage
-Use case that demonstrates how to use a button on a webpage to dial a Nemxo number and have that routed to a dedicated support number.
+# Client SDK - Click to Call
+This is a se case that demonstrates how to use a button on a webpage to dial a Nemxo number and have the call routed to a dedicated support number.
 
 ## Purchase a Nexmo number
 
@@ -11,7 +11,7 @@ nexmo number:buy -c GB --confirm
 
 ## Create an application
 
-Run the following Nexmo CLI command in your application directory, replacing `abc123.ngrok.io` with your own server URL:
+Run the following Nexmo CLI command in your application directory, replacing `abc123.ngrok.io` with your own public-facing server URL:
 
 ```sh
 nexmo app:create ClickToCall https://abc123.ngrok.io/webhooks/answer https://abc123.ngrok.io/webhooks/event --keyfile=private.key --type=voice
@@ -43,8 +43,6 @@ nexmo user:create name="supportuser"
 User created: USER_ID
 ```
 
-Make a note of the `USER_ID` returned by this command.
-
 ## Generate a JWT
 
 Generate a JWT that the `supportuser` will authenticate with, replacing `APPLICATION_ID` with the application ID you created earlier:
@@ -62,7 +60,7 @@ Copy `example.env` to `.env` and then populate it as follows:
 ```
 PORT=3000
 JWT= /* The JWT */
-NEXMO_NUMBER= /* The Nexmo Number associated with your application */
+NEXMO_NUMBER= /* The Nexmo Number that you linked to your application */
 DESTINATION_PHONE_NUMBER= /* A target number to receive calls on */
 ```
 
@@ -88,7 +86,7 @@ npm start
 
 ## Run the application
 
-Launch your application from your browser by entering `http://localhost:3000` in the address bar (changing the port from `3000` to whatever you configured in `.env`).
+Launch your application from your browser by entering `http://localhost:3000` in the address bar (changing the port number from `3000` to whatever you configured in `.env`).
 
 Click the "Call Now!" button. The application should read a welcome message and then transfer the call to your target phone number (`DESTINATION_PHONE_NUMBER` in `.env`).
 

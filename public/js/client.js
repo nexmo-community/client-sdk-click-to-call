@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Create a new NexmoClient instance and authenticate with the JWT
   let client = new NexmoClient();
   application = await client.login(jwt);
-  console.log(`You've logged in with the user ${application.me.name}`);
+  notifications.innerHTML = `You are logged in as ${application.me.name}`;
 
   // Whenever a call is received, bind an event that ends the call to
   // the hangup button
