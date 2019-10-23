@@ -19,13 +19,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       btnHangup.removeEventListener('click', terminateCall)
     };
     btnHangup.addEventListener('click', terminateCall);
-  });
 
-  // During a call, retrieve the Conversation so that we can determine 
-  // if a Member leaves and change the state of the button
-  application.on("call:status:changed", (nxmCall) => {
-    console.log(`Call status: ${nxmCall.status}`);
-    conversation = nxmCall.conversation;
+    // Retrieve the Conversation so that we can determine if a 
+    // Member has left and refresh the button state
+    conversation = call.conversation;
     conversation.on("member:left", (member, event) => {
       toggleCallStatusButton('idle');
     });
