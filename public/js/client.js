@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Whenever we click the call button, trigger a call to the support number
   // and hide the Call Now button
   btnCall.addEventListener('click', () => {
-    application.callServer();
+    application.callServer(application.me.name);
     toggleCallStatusButton('in_progress');
   });
 });
