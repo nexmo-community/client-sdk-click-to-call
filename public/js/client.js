@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Create a new NexmoClient instance and authenticate with the JWT
   let client = new NexmoClient();
-  application = await client.login(jwt);
+  application = await client.createSession(jwt);
   notifications.innerHTML = `You are logged in as ${application.me.name}`;
 
   let conversation = null;
